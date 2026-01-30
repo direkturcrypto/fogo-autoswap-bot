@@ -1,0 +1,22 @@
+{
+  "name": "fogo-autoswap",
+  "version": "1.0.0",
+  "description": "FOGO AutoSwap Bot - Swap FOGO <-> USDC automatically",
+  "type": "module",
+  "main": "autoswap.js",
+  "scripts": {
+    "start": "node autoswap.js",
+    "swap": "node autoswap.js"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.29.0",
+    "@solana/spl-token": "^0.4.14",
+    "@solana/web3.js": "^1.87.6",
+    "axios": "^1.6.2",
+    "bn.js": "^5.2.1",
+    "bs58": "^6.0.0",
+    "dotenv": "^16.3.1"
+  },
+  "author": "",
+  "license": "ISC"
+}
