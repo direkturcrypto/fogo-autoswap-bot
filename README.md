@@ -12,7 +12,31 @@ Bot otomatis untuk swap bolak-balik **FOGO ↔ USDC** di [Valiant DEX](https://a
 
 ---
 
-## 🖥️ Setup di VPS (Ubuntu/Debian)
+## 🤖 Setup dengan AI Assistant (Recommended!)
+
+Jika kamu menggunakan AI coding assistant seperti **Moltbot**, **OpenClawBot**, atau **ClawdBot**, cukup copy-paste prompt berikut:
+
+```
+Tolong bantu saya setup FOGO AutoSwap Bot:
+
+1. Clone repo: git clone https://github.com/direkturcrypto/fogo-autoswap-bot.git
+2. Masuk folder: cd fogo-autoswap-bot
+3. Install dependencies: npm install
+4. Buat file .env dengan isi:
+   RPC_URL=https://mainnet.fogo.io
+   PRIVATE_KEY=[PRIVATE_KEY_SAYA]
+   DELAY_MIN=5
+   DELAY_MAX=10
+5. Jalankan dengan PM2: pm2 start autoswap.js --name fogo-bot
+
+Private key saya adalah: [PASTE_PRIVATE_KEY_DISINI]
+```
+
+> ⚠️ **Ganti `[PASTE_PRIVATE_KEY_DISINI]` dengan private key kamu!**
+
+---
+
+## 🖥️ Setup Manual di VPS (Ubuntu/Debian)
 
 ### 1. Install Node.js
 
@@ -38,8 +62,8 @@ sudo npm install -g pm2
 ### 3. Clone Repository
 
 ```bash
-git clone https://github.com/USERNAME/fogo-bot.git
-cd fogo-bot
+git clone https://github.com/direkturcrypto/fogo-autoswap-bot.git
+cd fogo-autoswap-bot
 ```
 
 ### 4. Install Dependencies
