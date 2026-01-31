@@ -1,164 +1,170 @@
 # 🔥 FOGO AutoSwap Bot
 
-Bot otomatis untuk swap bolak-balik **FOGO ↔ USDC** di [Valiant DEX](https://app.valiant.gg) pada Fogo Chain.
+An automated trading bot that performs continuous FOGO ↔ USDC swaps on [Valiant DEX](https://app.valiant.gg) (Fogo Chain).
 
-## 📋 Flow
+## 📋 How It Works
 
 ```
-┌─────────────────────────────────────────────────┐
-│  80% FOGO → USDC → FOGO → delay 5-10min → loop  │
-└─────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────┐
+│  80% FOGO → USDC → FOGO → 5-10 min delay → repeat   │
+└──────────────────────────────────────────────────────┘
 ```
+
+The bot automatically:
+- Swaps 80% of your FOGO balance to USDC
+- Immediately swaps back to FOGO
+- Waits 5-10 minutes (randomized)
+- Repeats indefinitely
 
 ---
 
-## 🤖 Setup dengan AI Assistant (Recommended!)
+## 🤖 Quick Setup with AI Assistant
 
-Jika kamu menggunakan AI coding assistant seperti **Moltbot**, **OpenClawBot**, atau **ClawdBot**, cukup copy-paste prompt berikut:
+If you're using an AI coding assistant like **Cursor**, **Windsurf**, or similar, simply copy and paste this prompt:
 
 ```
-Tolong bantu saya setup FOGO AutoSwap Bot:
+Please help me set up the FOGO AutoSwap Bot:
 
-1. Clone repo: git clone https://github.com/direkturcrypto/fogo-autoswap-bot.git
-2. Masuk folder: cd fogo-autoswap-bot
+1. Clone the repository: git clone https://github.com/direkturcrypto/fogo-autoswap-bot.git
+2. Navigate to folder: cd fogo-autoswap-bot
 3. Install dependencies: npm install
-4. Buat file .env dengan isi:
+4. Create .env file with:
    RPC_URL=https://mainnet.fogo.io
-   PRIVATE_KEY=[PRIVATE_KEY_SAYA]
+   PRIVATE_KEY=[MY_PRIVATE_KEY]
    DELAY_MIN=5
    DELAY_MAX=10
-5. Jalankan dengan PM2: pm2 start autoswap.js --name fogo-bot
+5. Start with PM2: pm2 start autoswap.js --name fogo-bot
 
-Private key saya adalah: [PASTE_PRIVATE_KEY_DISINI]
+My private key is: [PASTE_YOUR_PRIVATE_KEY_HERE]
 ```
 
-> ⚠️ **Ganti `[PASTE_PRIVATE_KEY_DISINI]` dengan private key kamu!**
+> ⚠️ **Replace `[PASTE_YOUR_PRIVATE_KEY_HERE]` with your actual private key!**
 
 ---
 
-## 🖥️ Setup Manual di VPS (Ubuntu/Debian)
+## 🖥️ Manual VPS Setup (Ubuntu/Debian)
 
-### 1. Install Node.js
+### Step 1: Install Node.js
 
 ```bash
-# Update system
+# Update system packages
 sudo apt update && sudo apt upgrade -y
 
 # Install Node.js 20.x
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt install -y nodejs
 
-# Verifikasi
-node -v  # harus v20.x
+# Verify installation
+node -v  # Should show v20.x
 npm -v
 ```
 
-### 2. Install PM2 (Process Manager)
+### Step 2: Install PM2 Process Manager
 
 ```bash
 sudo npm install -g pm2
 ```
 
-### 3. Clone Repository
+### Step 3: Clone Repository
 
 ```bash
 git clone https://github.com/direkturcrypto/fogo-autoswap-bot.git
 cd fogo-autoswap-bot
 ```
 
-### 4. Install Dependencies
+### Step 4: Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 5. Konfigurasi
+### Step 5: Configure Environment
 
 ```bash
-# Copy template config
+# Copy example config
 cp .env.example .env
 
-# Edit config
+# Edit configuration
 nano .env
 ```
 
-Isi file `.env`:
+Add your configuration:
 ```env
-# Fogo RPC endpoint
+# Fogo Chain RPC endpoint
 RPC_URL=https://mainnet.fogo.io
 
-# Private key wallet (base58 format dari Phantom/Solflare)
-PRIVATE_KEY=paste_private_key_kamu_disini
+# Your wallet private key (base58 format)
+PRIVATE_KEY=your_private_key_here
 
-# Delay antara swap (menit)
+# Delay between swap cycles (in minutes)
 DELAY_MIN=5
 DELAY_MAX=10
 ```
 
-> ⚠️ **PENTING**: Jangan pernah share private key! File `.env` sudah di-ignore oleh git.
+> ⚠️ **IMPORTANT**: Never share your private key! The `.env` file is automatically ignored by git.
 
-### 6. Cara Dapat Private Key
+### Step 6: Export Private Key
 
-**Dari Phantom:**
-1. Buka Phantom → Settings → Security & Privacy
-2. Export Private Key → Masukkan password
-3. Copy key (format base58)
+**From Phantom Wallet:**
+1. Open Phantom → Settings → Security & Privacy
+2. Click "Export Private Key" → Enter password
+3. Copy the key (base58 format)
 
-**Dari Solflare:**
-1. Buka Solflare → Settings → Export Private Key
-2. Copy key (format base58)
+**From Solflare Wallet:**
+1. Open Solflare → Settings → Export Private Key
+2. Copy the key (base58 format)
 
 ---
 
-## 🚀 Menjalankan Bot
+## 🚀 Running the Bot
 
-### Development (dengan auto-reload)
+### Development Mode
 
 ```bash
 npm start
-# atau
+# or
 node autoswap.js
 ```
 
-### Production (dengan PM2)
+### Production Mode (Recommended)
 
 ```bash
-# Start bot
+# Start the bot
 pm2 start autoswap.js --name fogo-bot
 
-# Lihat status
+# Check status
 pm2 status
 
-# Lihat logs
+# View logs
 pm2 logs fogo-bot
 
-# Stop bot
+# Stop the bot
 pm2 stop fogo-bot
 
-# Restart bot
+# Restart the bot
 pm2 restart fogo-bot
 
-# Auto-start saat VPS reboot
+# Enable auto-start on system reboot
 pm2 startup
 pm2 save
 ```
 
 ---
 
-## ⚙️ Konfigurasi
+## ⚙️ Configuration Options
 
-| Variable | Default | Keterangan |
-|----------|---------|------------|
-| `RPC_URL` | `https://mainnet.fogo.io` | Fogo RPC endpoint |
-| `PRIVATE_KEY` | - | Private key wallet (base58) |
-| `DELAY_MIN` | `5` | Delay minimum (menit) |
-| `DELAY_MAX` | `10` | Delay maximum (menit) |
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `RPC_URL` | `https://mainnet.fogo.io` | Fogo Chain RPC endpoint |
+| `PRIVATE_KEY` | - | Wallet private key (base58 format) |
+| `DELAY_MIN` | `5` | Minimum delay between cycles (minutes) |
+| `DELAY_MAX` | `10` | Maximum delay between cycles (minutes) |
 
-> **Note:** Bot otomatis swap **80%** dari balance FOGO. 20% sisanya untuk gas.
+> **Note:** The bot swaps **80%** of your FOGO balance. The remaining 20% is reserved for gas fees.
 
 ---
 
-## 📝 Contoh Output
+## 📝 Example Output
 
 ```
 ============================================================
@@ -198,39 +204,45 @@ pm2 save
 
 ---
 
-## ⚠️ Catatan Penting
+## ⚠️ Important Notes
 
-- ✅ Bot swap **80%** dari saldo FOGO, sisanya 20% untuk gas
-- ✅ Minimal balance: **0.2 FOGO**
-- ✅ USDC dust < 0.01 akan di-skip otomatis
-- ✅ Bot auto-retry jika ada error
-- ❌ **JANGAN** share private key ke siapapun!
-- ❌ **JANGAN** commit file `.env` ke GitHub!
+- ✅ Bot swaps **80%** of FOGO balance; 20% reserved for gas
+- ✅ Minimum required balance: **0.2 FOGO**
+- ✅ USDC dust amounts (< $0.01) are automatically skipped
+- ✅ Automatic retry on errors
+- ❌ **NEVER** share your private key with anyone
+- ❌ **NEVER** commit your `.env` file to GitHub
 
 ---
 
 ## 🛠️ Troubleshooting
 
-### Bot tidak jalan?
+### Bot not running?
 
 ```bash
-# Cek logs
+# Check logs for errors
 pm2 logs fogo-bot --lines 50
 
-# Restart
+# Restart the bot
 pm2 restart fogo-bot
 ```
 
-### Error "Not enough FOGO"?
+### "Not enough FOGO" error?
 
-Pastikan wallet punya minimal 0.2 FOGO untuk swap + gas.
+Ensure your wallet has at least 0.2 FOGO (0.1 for swap + 0.1 for gas).
 
-### Error "PRIVATE_KEY tidak ditemukan"?
+### "PRIVATE_KEY not found" error?
 
-Pastikan file `.env` sudah ada dan PRIVATE_KEY terisi.
+Verify that your `.env` file exists and contains the `PRIVATE_KEY` variable.
 
 ---
 
 ## 📄 License
 
 MIT License - Free to use and modify.
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
