@@ -332,23 +332,28 @@ async function main() {
             const { fogoBalance, usdcBalance } = await printBalances(connection, wallet.publicKey);
 
             // Calculate 80% of balance (keep 20% for gas and reserve)
+            let currentFogoBalance = fogoBalance;
             const reserveForGas = 0.1 * 1e9; // 0.1 FOGO for gas
-            const availableBalance = fogoBalance - reserveForGas;
-            const swapAmountLamports = Math.floor(availableBalance * (SWAP_PERCENT / 100));
 
             // Minimum USDC to swap (0.01 USDC = 10000 micro-USDC) - skip dust
             const MIN_USDC_SWAP = 10000n; // 0.01 USDC
 
-            // Check if we have enough USDC to swap first (recovery mode)
+            // Step 0: If we have USDC, swap to FOGO first (recovery/cleanup)
             if (usdcBalance >= MIN_USDC_SWAP && fogoBalance > 0.05 * 1e9) {
                 console.log('\n💡 Found USDC balance, swapping to FOGO first...');
                 await swapUsdcToFogo(connection, wallet, Number(usdcBalance));
-                await printBalances(connection, wallet.publicKey);
+                const newBalances = await printBalances(connection, wallet.publicKey);
+                currentFogoBalance = newBalances.fogoBalance;
             } else if (usdcBalance > 0n && usdcBalance < MIN_USDC_SWAP) {
-                console.log(`\n💨 USDC dust detected (${Number(usdcBalance) / 1e6} USDC), skipping...`);
+                console.log(`\n💨 USDC dust detected (${Number(usdcBalance) / 1e6} USDC), ignoring...`);
             }
-            // Normal flow: FOGO → USDC → FOGO
-            else if (availableBalance >= 0.1 * 1e9) {
+
+            // Calculate available balance for swap
+            const availableBalance = currentFogoBalance - reserveForGas;
+            const swapAmountLamports = Math.floor(availableBalance * (SWAP_PERCENT / 100));
+
+            // Main flow: FOGO → USDC → FOGO
+            if (availableBalance >= 0.1 * 1e9) {
                 // Step 1: Swap FOGO → USDC
                 await swapFogoToUsdc(connection, wallet, swapAmountLamports);
 
